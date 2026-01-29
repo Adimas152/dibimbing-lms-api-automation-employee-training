@@ -1,0 +1,20 @@
+{
+  "query": "mutation createEmployee($input: EmployeeInput!) {\n  createEmployee(input: $input) {\n    id\n    __typename\n  }\n}",
+  "operationName": "createEmployee",
+  "variables": {
+    "input": {
+      "name": "Fransiskus Andika Setiawan",
+      "employeeId": "qa-0003",
+      "email": "arwendymelynss@dibimbing.id",
+      "phoneNumber": "84546464367346934",
+      "divisionId": "43b462d2-e360-46e2-b6bd-73b3f5fb0721",
+      "employeeRole": "Mentor",
+      "angkatanId": 2,
+      "gender": "male",
+      "dateOfBirth": "1998-11-04T00:00:00.000Z",
+      "address": "Jl. H Komaruddin Gang Citra Rajabasa Bandar lampung\nBandar lampung",
+      "nik": "",
+      "npwp": ""
+    }
+  }
+}
