@@ -39,11 +39,13 @@ dependencies {
 }
 
 test {
-    useTestNG()
+    useTestNG() {
+        suites 'testng.xml'
+    }
 
+    // Show test output
     testLogging {
         events "passed", "failed", "skipped"
         showStandardStreams true
     }
 }
-
