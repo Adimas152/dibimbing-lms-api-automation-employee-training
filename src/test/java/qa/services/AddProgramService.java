@@ -13,8 +13,8 @@ public class AddProgramService {
 
   public static ApiResponse<AddProgramResponse> addProgram() {
     return addProgram(
-        "Training boongan 10",
-        "Description: Training boongan 10",
+        "Training Test",
+        "Description: Training Desc",
         "training",
         false
     );

@@ -17,9 +17,9 @@ public class EmployeeService {
     String query = TestDataLoader.load("graphql/mutations/AddEmployee.graphql");
 
     Map<String, Object> variable = AddEmployeeVariable.variables(
-        "Bejo",
-        "00101",
-        "bejo111122sss@dibimbing.id",
+        "Putra ",
+        "TCID-1001",
+        "putra111122sss@dibimbing.id",
         "76986896689",
         "43b462d2-e360-46e2-b6bd-73b3f5fb0721",
         "Mentor",
