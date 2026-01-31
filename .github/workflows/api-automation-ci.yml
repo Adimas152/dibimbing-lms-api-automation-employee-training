@@ -79,6 +79,18 @@ jobs:
             ]
           }" \
           ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Extract Test Summary
+        run: |
+          TOTAL=$(grep -R "<testcase" build/test-results/test | wc -l)
+          FAILED=$(grep -R "<failure" build/test-results/test | wc -l)
+          SKIPPED=$(grep -R "<skipped" build/test-results/test | wc -l)
+          PASSED=$((TOTAL - FAILED - SKIPPED))
+      
+          echo "TOTAL=$TOTAL" >> $GITHUB_ENV
+          echo "PASSED=$PASSED" >> $GITHUB_ENV
+          echo "FAILED=$FAILED" >> $GITHUB_ENV
+          echo "SKIPPED=$SKIPPED" >> $GITHUB_ENV
+
 
           
           
