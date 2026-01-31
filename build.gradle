@@ -40,7 +40,11 @@ dependencies {
 
 test {
     useTestNG() {
-        suites 'testng.xml'
+        suites 'testng.xml'()
+        reports {
+            junitXml.required = true
+            html.required = true
+        }
     }
 
     // Show test output
