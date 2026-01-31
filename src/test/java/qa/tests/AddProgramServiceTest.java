@@ -41,7 +41,6 @@ public class AddProgramServiceTest extends BaseAuthenticatedTest {
     }
 
 
-
     @Test(
             description = "TRN-ADD-002 - Failed add training when training name empty",
             groups = {"Training","Negative"}
