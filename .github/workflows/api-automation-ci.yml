@@ -31,4 +31,55 @@ jobs:
           COMPANY_ID: ${{ secrets.COMPANY_ID }}
           IS_DEBUG: ${{ secrets.IS_DEBUG }}
         run: |
-          ./gradlew clean test
+          ./gradlew clean test || true
+
+      - name: Send Slack Notification
+        if: always()
+        run: |
+          echo "📊 Collecting test results..."
+
+          TOTAL=$(grep -R "<testcase" build/test-results/test | wc -l || echo 0)
+          FAILED=$(grep -R "<failure" build/test-results/test | wc -l || echo 0)
+          SKIPPED=$(grep -R "<skipped" build/test-results/test | wc -l || echo 0)
+          PASSED=$((TOTAL - FAILED - SKIPPED))
+
+          if [ "$TOTAL" -eq 0 ]; then
+            PASS_PERCENT=0
+          else
+            PASS_PERCENT=$((PASSED * 100 / TOTAL))
+          fi
+
+          if [ "$FAILED" -eq 0 ]; then
+            STATUS="✅ PASSED"
+            COLOR="good"
+          else
+            STATUS="❌ FAILED"
+            COLOR="danger"
+          fi
+
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{
+            \"attachments\": [
+              {
+                \"color\": \"$COLOR\",
+                \"title\": \"API Automation Result\",
+                \"fields\": [
+                  {\"title\": \"Status\", \"value\": \"$STATUS\", \"short\": true},
+                  {\"title\": \"Total Tests\", \"value\": \"$TOTAL\", \"short\": true},
+                  {\"title\": \"Passed\", \"value\": \"$PASSED\", \"short\": true},
+                  {\"title\": \"Failed\", \"value\": \"$FAILED\", \"short\": true},
+                  {\"title\": \"Skipped\", \"value\": \"$SKIPPED\", \"short\": true},
+                  {\"title\": \"Pass Rate\", \"value\": \"$PASS_PERCENT%\", \"short\": true},
+                  {\"title\": \"Branch\", \"value\": \"${{ github.ref_name }}\", \"short\": true},
+                  {\"title\": \"Triggered By\", \"value\": \"${{ github.actor }}\", \"short\": true}
+                ],
+                \"footer\": \"GitHub Actions\",
+                \"ts\": $(date +%s)
+              }
+            ]
+          }" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
+          
+          
+      
