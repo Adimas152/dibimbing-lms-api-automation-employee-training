@@ -11,30 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ===============================
+      # =========================
       # Checkout Source Code
-      # ===============================
+      # =========================
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ===============================
+      # =========================
       # Setup Java
-      # ===============================
+      # =========================
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # ===============================
-      # Permission Gradle
-      # ===============================
+      # =========================
+      # Grant Permission
+      # =========================
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # ===============================
-      # Run TestNG Automation
-      # ===============================
+      # =========================
+      # Run Automation Test
+      # =========================
       - name: Run API Automation Tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
@@ -43,23 +43,19 @@ jobs:
           COMPANY_ID: ${{ secrets.COMPANY_ID }}
           IS_DEBUG: ${{ secrets.IS_DEBUG }}
         run: |
-          ./gradlew clean test | tee test-output.log
+          ./gradlew clean test || true
 
-      # ===============================
-      # Extract TestNG Result (SAFE)
-      # ===============================
-      - name: Extract TestNG Test Result
+      # =========================
+      # Extract TestNG Result
+      # =========================
+      - name: Extract TestNG Result
         if: always()
         run: |
-          echo "📊 Extracting TestNG summary..."
+          echo "📊 Extracting TestNG results from XML..."
 
-          SUMMARY=$(grep -E "[0-9]+ tests completed" test-output.log | tail -1)
-
-          echo "SUMMARY=$SUMMARY"
-
-          TOTAL=$(echo "$SUMMARY" | awk '{print $1}')
-          FAILED=$(echo "$SUMMARY" | awk '{print $4}')
-          SKIPPED=$(echo "$SUMMARY" | awk '{print $6}')
+          TOTAL=$(grep -R "<testcase " build/test-results/test | wc -l)
+          FAILED=$(grep -R "<failure" build/test-results/test | wc -l)
+          SKIPPED=$(grep -R "<skipped" build/test-results/test | wc -l)
 
           PASSED=$((TOTAL - FAILED - SKIPPED))
 
@@ -75,9 +71,9 @@ jobs:
           echo "SKIPPED=$SKIPPED" >> $GITHUB_ENV
           echo "PASS_RATE=$PASS_RATE" >> $GITHUB_ENV
 
-      # ===============================
+      # =========================
       # Send Slack Notification
-      # ===============================
+      # =========================
       - name: Send Slack Notification
         if: always()
         run: |
