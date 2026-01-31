@@ -39,15 +39,15 @@ dependencies {
 }
 
 test {
-    useTestNG() {
-        suites 'testng.xml'()
-        reports {
-            junitXml.required = true
-            html.required = true
-        }
+    useTestNG {
+        suites 'testng.xml'
     }
 
-    // Show test output
+    reports {
+        junitXml.required = true
+        html.required = true
+    }
+
     testLogging {
         events "passed", "failed", "skipped"
         showStandardStreams true
