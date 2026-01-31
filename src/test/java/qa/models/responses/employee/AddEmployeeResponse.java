@@ -9,5 +9,8 @@ public class AddEmployeeResponse {
 
   public static class CreateEmployee {
     public String id;
+      public String name;
+      public String employeeId;
+      public String email;
   }
 }

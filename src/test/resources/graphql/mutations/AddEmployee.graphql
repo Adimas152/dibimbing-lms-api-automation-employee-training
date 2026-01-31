@@ -1,5 +1,8 @@
 mutation createEmployee($input: EmployeeInput!) {
     createEmployee(input: $input) {
         id
+        name
+        employeeId
+        email
     }
 }

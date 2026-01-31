@@ -5,5 +5,8 @@ mutation createProgram(
         input: $input
     ) {
         id
+        title
+        description
     }
 }
+

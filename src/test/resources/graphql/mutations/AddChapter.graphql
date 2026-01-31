@@ -1,0 +1,5 @@
+mutation createChapter($input: ChapterInput!) {
+    createChapter(input: $input) {
+        id
+    }
+}

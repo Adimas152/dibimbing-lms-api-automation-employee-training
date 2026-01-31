@@ -10,5 +10,7 @@ public class AddProgramResponse {
 
   public static class CreateProgram {
     public String id;
+    public String title;
+    public String description;
   }
 }
