@@ -161,22 +161,6 @@ Informasi yang dikirim:
 
 ---
 
-## ⚠️ Important Notes
-
-- CI tetap berjalan walaupun test gagal:
-```bash
-./gradlew clean test || true
-```
-
-- Data Slack diambil dari **JUnit XML**
-```bash
-build/test-results/test
-```
-
-Bukan dari Extent Report.
-
----
-
 ## ✅ Author
 
 **Adimas**  
